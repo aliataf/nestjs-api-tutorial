@@ -26,6 +26,10 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
 
 # IDE - VSCode
 .vscode/*
