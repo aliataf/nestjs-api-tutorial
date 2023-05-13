@@ -4,7 +4,8 @@ import * as pactum from 'pactum';
 
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
-import { AuthDto } from 'src/auth/dto';
+import { AuthDto } from '../src/auth/dto';
+import { EditUserDto } from '../src/user/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -105,12 +106,26 @@ describe('App e2e', () => {
           .spec()
           .get('/users/me')
           .withBearerToken('$S{accessToken}')
-          .expectStatus(200)
-          .inspect();
+          .expectStatus(200);
       });
     });
 
-    describe('Edit User', () => {});
+    describe('Edit User', () => {
+      it('should edit user', () => {
+        const dto: EditUserDto = {
+          firstName: 'Alii',
+          email: 'alii@test.nest',
+        };
+        return pactum
+          .spec()
+          .patch('/users')
+          .withBearerToken('$S{accessToken}')
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains(dto.firstName)
+          .expectBodyContains(dto.email);
+      });
+    });
   });
 
   describe('Bookmarks', () => {
